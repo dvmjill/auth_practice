@@ -1,4 +1,4 @@
-class SessionsController < ApplicationRecord
+class SessionsController < ApplicationController
 
   def new
     @user = User.new
@@ -9,8 +9,9 @@ class SessionsController < ApplicationRecord
 
     if @user && @user.authenticate(session_params[:password])
         session[:user_id] = @user.id
-        redirect_to root_path
+        redirect_to edit_user_path(@user)
     else
+      @user ||= User.new
         flash[:errors] = ["Invalid Username/password combo"]
         render :new
     end
